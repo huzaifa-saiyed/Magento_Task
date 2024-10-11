@@ -1,0 +1,127 @@
+<form action="<?= $block->getUrl('carts/index/placeOrder') ?>" method="post" onsubmit="return handleFormSubmit()">
+    <fieldset>
+        <legend><?= __('Shipping Address') ?></legend>
+        <label for="shipping_firstname"><?= __('First Name') ?></label>
+        <input type="text" id="shipping_firstname" name="shipping[firstname]" required pattern="[a-zA-Z\s]+" title="Only letters and spaces allowed">
+        <label for="shipping_lastname"><?= __('Last Name') ?></label>
+        <input type="text" id="shipping_lastname" name="shipping[lastname]" required pattern="[a-zA-Z\s]+" title="Only letters and spaces allowed">
+        <label for="shipping_street"><?= __('Street Address') ?></label>
+        <input type="text" id="shipping_street" name="shipping[street]" required>
+        <label for="shipping_city"><?= __('City') ?></label>
+        <input type="text" id="shipping_city" name="shipping[city]" required>
+        <label for="shipping_postcode"><?= __('Postal Code') ?></label>
+        <input type="text" id="shipping_postcode" name="shipping[postcode]" required pattern="\d{5}(-\d{4})?" title="Enter a valid postal code">
+        <label for="shipping_country_id"><?= __('Country') ?></label>
+        <select id="shipping_country_id" name="shipping[country_id]" required>
+            <?php $countries = $block->getCountryOptions(); ?>
+            <?php if ($countries): ?>
+                <?php foreach ($countries as $country): ?>
+                    <option value="<?= $country['value'] ?>"><?= $country['label'] ?></option>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <option value=""><?= __('No countries available') ?></option>
+            <?php endif; ?>
+        </select>
+        <label for="shipping_telephone"><?= __('Telephone') ?></label>
+        <input type="tel" id="shipping_telephone" name="shipping[telephone]" required pattern="\d{10}" title="Enter a valid 10-digit telephone number">
+    </fieldset>
+
+    <fieldset>
+        <legend><?= __('Billing Address') ?></legend>
+        <input type="checkbox" id="same_as_shipping" name="same_as_shipping" value="1" onclick="toggleBillingAddress(this)">
+        <label for="same_as_shipping"><?= __('Billing address same as shipping address') ?></label>
+
+        <div id="billing_address_fields">
+            <label for="billing_firstname"><?= __('First Name') ?></label>
+            <input type="text" id="billing_firstname" name="billing[firstname]" required pattern="[a-zA-Z\s]+" title="Only letters and spaces allowed">
+            <label for="billing_lastname"><?= __('Last Name') ?></label>
+            <input type="text" id="billing_lastname" name="billing[lastname]" required pattern="[a-zA-Z\s]+" title="Only letters and spaces allowed">
+            <label for="billing_street"><?= __('Street Address') ?></label>
+            <input type="text" id="billing_street" name="billing[street]" required>
+            <label for="billing_city"><?= __('City') ?></label>
+            <input type="text" id="billing_city" name="billing[city]" required>
+            <label for="billing_postcode"><?= __('Postal Code') ?></label>
+            <input type="text" id="billing_postcode" name="billing[postcode]" required pattern="\d{5}(-\d{4})?" title="Enter a valid postal code">
+            <label for="billing_country_id"><?= __('Country') ?></label>
+            <select id="billing_country_id" name="billing[country_id]" required>
+                <?php if ($countries): ?>
+                    <?php foreach ($countries as $country): ?>
+                        <option value="<?= $country['value'] ?>"><?= $country['label'] ?></option>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <option value=""><?= __('No countries available') ?></option>
+                <?php endif; ?>
+            </select>
+            <label for="billing_telephone"><?= __('Telephone') ?></label>
+            <input type="tel" id="billing_telephone" name="billing[telephone]" required pattern="\d{10}" title="Enter a valid 10-digit telephone number">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><?= __('Shipping Method') ?></legend>
+        <label>
+            <input type="radio" name="shipping_method" value="flatrate_flatrate" required>
+            <?= __('Flat Rate') ?>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <legend><?= __('Payment Method') ?></legend>
+        <label>
+            <input type="radio" name="payment_method" value="checkmo" required>
+            <?= __('Check / Money Order') ?>
+        </label>
+    </fieldset>
+
+    <button type="submit"><?= __('Place Order') ?></button>
+</form>
+
+<script>
+function toggleBillingAddress(checkbox) {
+    var billingAddressFields = document.getElementById('billing_address_fields');
+    var billingFields = billingAddressFields.querySelectorAll('input, select');
+    if (checkbox.checked) {
+        billingAddressFields.style.display = 'none';
+        billingFields.forEach(function(field) {
+            field.removeAttribute('required');
+        });
+    } else {
+        billingAddressFields.style.display = 'block';
+        billingFields.forEach(function(field) {
+            field.setAttribute('required', 'required');
+        });
+    }
+}
+
+function handleFormSubmit() {
+    var checkbox = document.getElementById('same_as_shipping');
+    if (checkbox.checked) {
+        document.getElementById('billing_firstname').value = document.getElementById('shipping_firstname').value;
+        document.getElementById('billing_lastname').value = document.getElementById('shipping_lastname').value;
+        document.getElementById('billing_street').value = document.getElementById('shipping_street').value;
+        document.getElementById('billing_city').value = document.getElementById('shipping_city').value;
+        document.getElementById('billing_postcode').value = document.getElementById('shipping_postcode').value;
+        document.getElementById('billing_country_id').value = document.getElementById('shipping_country_id').value;
+        document.getElementById('billing_telephone').value = document.getElementById('shipping_telephone').value;
+    }
+
+    var shippingMethodSelected = document.querySelector('input[name="shipping_method"]:checked');
+    if (!shippingMethodSelected) {
+        alert('Please select a shipping method.');
+        return false;
+    }
+
+    var paymentMethodSelected = document.querySelector('input[name="payment_method"]:checked');
+    if (!paymentMethodSelected) {
+        alert('Please select a payment method.');
+        return false;
+    }
+
+    return true; 
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('same_as_shipping');
+    toggleBillingAddress(checkbox);
+});
+</script>
