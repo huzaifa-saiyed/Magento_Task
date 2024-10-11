@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <!-- parent resource tag and give id from menu parent add tag -->
+                <resource id="Kitchen_Gallery::gallery" title="Gallery_Resource">
+                    <!-- child resource tag and give id from menu child add tag -->
+                    <resource id="Kitchen_Gallery::gallery_grid" title="Gallery Grid" translate="title" sortOrder="10" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

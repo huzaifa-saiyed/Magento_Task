@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+    <!-- parent add tag -->
+        <add id="Kitchen_Gallery::gallery" title="Kitchen365" translate="title" module="Kitchen_Gallery" sortOrder="10" dependsOnModule="Kitchen_Gallery" resource="Kitchen_Gallery::gallery"/>
+
+    <!-- child add tag -->
+        <add id="Kitchen_Gallery::gallery_grid" title="Manage Gallery" translate="title" module="Kitchen_Gallery" sortOrder="10" parent="Kitchen_Gallery::gallery" action="gallery/Gallery" dependsOnModule="Kitchen_Gallery" resource="Kitchen_Gallery::gallery_grid"/>
+    </menu>
+
+</config>
