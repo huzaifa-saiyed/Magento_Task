@@ -1,0 +1,69 @@
+<button id="sptBtn" class="sptBtn">Support</button>
+
+<div id="modal-html">
+    <div id="popup">
+        <h1>Email Send</h1>
+        <label><b>Email:</b></label>
+        <input type="email" name="mail" id="mail" placeholder="Enter Email" required><br><br>
+        <label><b>Comment:</b></label>
+        <input type="text" name="comment" id="comment" placeholder="Enter Comment" required>
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'mage/storage'
+        ],
+        function(
+            $,
+            modal,
+            storage
+        ) {
+            $(document).ready(function() {
+                var options = {
+                    type: 'popup',
+                    responsive: true,
+                    innerScroll: true,
+                    buttons: [{
+                        text: $.mage.__('Submit'),
+                        class: 'submitBtn',
+                        click: function() {
+                            var email = $('#mail').val().trim();
+                            var comment = $('#comment').val().trim();
+
+                            if (email === "" || comment === "") {
+                                alert('Please fill in all required fields.');
+                            } else {
+                                var postData = {
+                                    email: email,
+                                    comment: comment
+                                };
+
+                                storage.post
+                                (
+                                    'twelve/index/emailSend', 
+                                    JSON.stringify(postData), 
+                                    true
+                                ).done(function(response) {
+                                        $('#modal-html').modal("closeModal");
+                                        $('#mail').val('');
+                                        $('#comment').val('');
+                                        alert('Your details have been submitted successfully.');
+                                    })
+                                    .fail(function() {
+                                        alert('Oops! something went wrong, Please try again.');
+                                    });
+                            }
+                        }
+                    }]
+                };
+
+                $('#sptBtn').click(function() {
+                    $('#modal-html').modal(options).modal('openModal');
+                });
+            });
+        });
+</script>
