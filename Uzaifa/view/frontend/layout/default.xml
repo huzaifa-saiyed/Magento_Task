@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1columns">
+    <head>
+        <script src="custom.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Kitchen\Uzaifa\Block\CurrentTime" name="current_time_block" template="Kitchen_Uzaifa::current_time.phtml" />
+        </referenceContainer>
+    </body>
+</page>
