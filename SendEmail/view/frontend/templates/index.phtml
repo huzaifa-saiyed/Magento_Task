@@ -1,0 +1,159 @@
+<button type="submit" id="sendEmailBtn" class="sendEmailBtn">Click Here to Send Email</button>
+
+<div id="openPopup" class="openPopup" style="display: none;">
+    <fieldset>
+        <legend>Personal Information:</legend>
+
+        <label for="fname">Enter Your Name:</label><br>
+        <input type="text" id="fname" name="fname" placeholder="Enter Your Name"><br>
+        <hr>
+
+        <label for="email">Enter Your Email:</label><br>
+        <input type="email" id="email" name="email" placeholder="Enter Your Email"><br>
+        <hr>
+
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female">Female</label><br>
+        <hr>
+
+        <label for="myfile">Select a file:</label>
+        <input type="file" id="myfile" name="myfile">
+        <hr>
+
+        <label for="status">Choose a status:</label>
+        <select id="status" name="status">
+            <option value="">Select Option...</option>
+            <option value="available">Available</option>
+            <option value="busy">Busy</option>
+            <option value="offline">Offline</option>
+        </select>
+        <hr>
+    </fieldset>
+</div>
+
+<div id="errorPopup" class="errorPopup" style="display: none;">
+    <h2>Oops! Something went wrong...</h2>
+    <p>Unable to save your information</p>
+</div>
+
+<div id="donePopup" class="donePopup" style="display: none;">
+    <h2>Congratulations!!!</h2>
+    <p>happy to save your information</p>
+</div>
+
+<div id="emptyPopup" class="emptyPopup" style="display: none;">
+    <h2>Oops! Something went wrong...</h2>
+    <p>Please! fill the form..</p>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'mage/storage'
+        ],
+        function(
+            $,
+            modal,
+            storage
+        ) {
+            var detailsPopup = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Kitchen 365',
+                buttons: [{
+                        text: $.mage.__('Close'),
+                        class: '',
+                        click: function() {
+                            this.closeModal();
+                        }
+                    },
+                    {
+                        text: $.mage.__('Save Info'),
+                        class: '',
+                        click: function() {
+                            var name = $('#fname').val();
+                            var email = $('#email').val();
+                            var gender = $('input[name=gender]:checked').val();
+                            var file = $('#myfile').val();
+                            var status = $('#status').val();
+
+                            if (!name || !email || !gender || !file || !status) {
+                                var emptyPopup = {
+                                    type: 'popup',
+                                    responsive: true,
+                                    innerScroll: true,
+                                    title: 'Kitchen 365',
+                                    buttons: [{
+                                        text: $.mage.__('Close'),
+                                        class: '',
+                                        click: function() {
+                                            this.closeModal();
+                                        }
+                                    }]
+                                };
+                                var popupEmpty = modal(emptyPopup, $('#emptyPopup'));
+                                $('#emptyPopup').modal('openModal');
+                                return;
+                            }
+
+                            storage.post(
+                                'sendemail/index/save',
+                                JSON.stringify({
+                                    name: name,
+                                    email: email,
+                                    gender: gender,
+                                    file: file,
+                                    status: status,
+                                }),
+                                true
+                            ).done(function(response) {
+                                var donePopup = {
+                                    type: 'popup',
+                                    responsive: true,
+                                    innerScroll: true,
+                                    title: 'Kitchen 365',
+                                    buttons: [{
+                                        text: $.mage.__('Close'),
+                                        class: '',
+                                        click: function() {
+                                            this.closeModal();
+                                        }
+                                    }]
+                                };
+                                var popupDone = modal(donePopup, $('#donePopup'));
+                                $('#donePopup').modal('openModal');
+                            }).fail(function(response) {
+                                var errorPopup = {
+                                    type: 'popup',
+                                    responsive: true,
+                                    innerScroll: true,
+                                    title: 'Kitchen 365',
+                                    buttons: [{
+                                        text: $.mage.__('Close'),
+                                        class: '',
+                                        click: function() {
+                                            this.closeModal();
+                                        }
+                                    }]
+                                };
+                                var popupError = modal(errorPopup, $('#errorPopup'));
+                                $('#errorPopup').modal('openModal');
+                            });
+                        }
+                    },
+                ]
+            };
+
+            var popupDetails = modal(detailsPopup, $('#openPopup'));
+
+            $('#sendEmailBtn').click(function() {
+                $('#openPopup').modal('openModal');
+            });
+        }
+    );
+</script>
