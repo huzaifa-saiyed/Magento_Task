@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Add additional column header to order view page -->
+        <referenceBlock name="order_info">
+            <block class="Magento\Framework\View\Element\Template" name="kitchen.additional.column.header" template="Kitchen_TestThree::extraColumn-header.phtml"/>
+        </referenceBlock>
+
+        <!-- Add additional column data to order view page -->
+        <referenceBlock name="order_items">
+            <block class="Magento\Framework\View\Element\Template" name="kitchen.additional.column.data" template="Kitchen_TestThree::extraColumn.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

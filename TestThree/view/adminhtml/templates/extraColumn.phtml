@@ -1,0 +1,5 @@
+<!-- <td class="col extra-column"><?= /* @escapeNotVerified */ __('Extra Data') ?></td> -->
+
+<td data-th="<?= $block->escapeHtml(__('Custom Filter')) ?>" class="col">
+    <?= $block->escapeHtml($block->getOrder()->getCustomFilter()) ?>
+  </td>

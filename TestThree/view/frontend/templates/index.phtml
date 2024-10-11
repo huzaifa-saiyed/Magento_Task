@@ -1,0 +1,30 @@
+<form action="<?= $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]); ?>" method="get">
+    <label for="sku">SKU:</label>
+    <input type="text" name="sku" id="sku">
+    <br><br>
+    <button type="submit">Search</button>
+</form>
+<hr>
+<?php
+$sku = $block->getRequest()->getParam('sku');
+if ($sku) {
+    $product = $block->getProductBySku($sku);
+    if ($product && $product->getCustomFilter()) {
+        ?>
+        <div>
+            <img src="<?= $block->getUrl('pub/media/catalog') . 'product' . $product->getImage(); ?>" alt="<?= $product->getName(); ?>" width="100">
+            <p>Name: <?= $product->getName(); ?></p>
+            <p>Price: <?= $product->getPrice(); ?></p>
+            <form data-role="tocart-form" action="<?= $block->getUrl('checkout/cart/add'); ?>" method="post">
+                <input type="hidden" name="product" value="<?= $product->getId(); ?>">
+                <button type="submit" title="Add to Cart" class="action tocart primary">
+                    <span>Add to Cart</span>
+                </button>
+            </form>
+        </div>
+        <?php
+    } else {
+        echo "No Product Found.";
+    }
+}
+?>

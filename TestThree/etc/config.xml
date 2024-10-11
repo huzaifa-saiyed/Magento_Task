@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <simpleshipping>
+                <active>1</active>
+                <name>Simple Shipping</name>
+                <title>Shipping Method</title>
+                <model>Kitchen\TestThree\Model\Carrier</model>
+                <price>10</price>
+            </simpleshipping>
+        </carriers>
+    </default>
+</config>
